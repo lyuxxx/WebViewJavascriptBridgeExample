@@ -11,7 +11,7 @@
 
 @implementation SCWebViewMessageHandler
 
-- (void)registerHandlersForJSBridge:(WebViewJavascriptBridge *)bridge {
+- (void)registerHandlersForJSBridge:(WKWebViewJavascriptBridge *)bridge {
     
     NSMutableArray *handlerNames = @[@"requestLocation", @"share"].mutableCopy;
 

@@ -23,6 +23,7 @@
     
     self.tableView.tableFooterView = [[UIView alloc] init];
     
+    self.navigationController.navigationBar.translucent = NO;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

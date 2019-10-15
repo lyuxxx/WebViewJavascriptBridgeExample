@@ -7,16 +7,15 @@
 //
 
 #import "SCWebViewController.h"
-#import "WebViewJavascriptBridge.h"
+#import "WKWebViewJavascriptBridge.h"
 #import "SCWebViewMessageHandler.h"
-#import "UIWebView+JavaScriptAlert.h"
 
-@interface SCWebViewController () <UIWebViewDelegate>
+@interface SCWebViewController () <WKNavigationDelegate, WKUIDelegate>
 
-@property (weak, nonatomic) IBOutlet UIWebView *webView;
+@property (nonatomic, strong) WKWebView *webView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicatorView;
 
-@property (strong, nonatomic) WebViewJavascriptBridge *bridge;
+@property (strong, nonatomic) WKWebViewJavascriptBridge *bridge;
 
 @property (copy, nonatomic) NSString *HTMLFileName;
 @property (assign, nonatomic) Class messageHandlerClass;
@@ -42,9 +41,17 @@
     [super viewDidLoad];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(shareAction)];
+    self.automaticallyAdjustsScrollViewInsets = NO;
     
-    // 创建 WebViewJavascriptBridge 对象
-    self.bridge = [WebViewJavascriptBridge bridgeForWebView:self.webView];
+    WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
+    
+    self.webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) configuration:configuration];
+    self.webView.navigationDelegate = self;
+    
+    [self.view addSubview:self.webView];
+    
+    // 创建 WKWebViewJavascriptBridge 对象
+    self.bridge = [WKWebViewJavascriptBridge bridgeForWebView:self.webView];
     [self.bridge setWebViewDelegate:self];
     
     // 注册 handler
@@ -83,12 +90,13 @@
 }
 
 
-#pragma mark - <UIWebViewDelegate>
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
+#pragma mark - <WKNavigationDelegate>
+
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
     [self.indicatorView stopAnimating];
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+- (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error {
     [self.indicatorView stopAnimating];
 }
 

@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "WebViewJavascriptBridge.h"
+#import "WKWebViewJavascriptBridge.h"
 
 @class SCWebViewController;
 
@@ -17,7 +17,7 @@
 @property (weak, nonatomic) SCWebViewController *controller;
 
 /// 注册 handler
-- (void)registerHandlersForJSBridge:(WebViewJavascriptBridge *)bridge;
+- (void)registerHandlersForJSBridge:(WKWebViewJavascriptBridge *)bridge;
 
 
 /// 要注册的特定 handler name，子类重写
