@@ -61,8 +61,7 @@
     
     // 加载网页
     NSString *filePath = [[NSBundle mainBundle] pathForResource:self.HTMLFileName ofType:@"html"];
-    NSString *HTMLString = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
-    [self.webView loadHTMLString:HTMLString baseURL:nil];
+    [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:filePath]]];
     
     // 显示 loading
     [self.indicatorView startAnimating];
